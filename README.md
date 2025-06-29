@@ -1,1 +1,1 @@
-RAT
+Remote access trojan server and client written in Python

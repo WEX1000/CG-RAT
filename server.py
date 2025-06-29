@@ -1,13 +1,8 @@
 import socket
 import threading
 import os
-from http.client import responses
-from turtledemo.penrose import start
-
 from colorama import Fore
 import ctypes
-
-from discord.ext.commands import command
 
 clients = {}
 
@@ -43,7 +38,7 @@ def accept_clients(server):
         client_socket, addr = server.accept()
         threading.Thread(target=handle_cient, args=(client_socket, addr), daemon=True).start()
 
-def start_server(host="0.0.0.0", port=5555):
+def start_server(host, port):
     server= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
     server.listen(5)
@@ -74,11 +69,11 @@ def start_server(host="0.0.0.0", port=5555):
             for client in clients.values():
                 client.send(command.encode())
         elif 0 <= choice < len(clients):
-            target_addr = list(client.keys())[choice]
+            target_addr = list(clients.keys())[choice]
             command = input(f"Enter command to send to {target_addr[0]}: ")
             clients[target_addr].send(command.encode())
         else:
             print("[!] Invalid selection.")
 
 if __name__ == "__main__":
-    start_server()
+    start_server("0.0.0.0", 2137)
